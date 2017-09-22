@@ -1,2 +1,14 @@
 ---
 # handlers file for ansible-dgraph
+
+- name: reload daemon
+  command: systemctl daemon-reload
+
+- name: restart dgraph
+  service: name=dgraph state=restarted enabled=yes
+
+- name: stop dgraph
+  service: name=dgraph state=stopped
+
+- name: start dgraph
+  service: name=dgraph state=started

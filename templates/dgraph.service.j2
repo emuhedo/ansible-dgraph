@@ -1,0 +1,21 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=Dgraph service
+After=network.target
+Wants=network.target
+
+[Service]
+ExecStart={{ dgraph_install_dir }}/{{ dgraph_archive }}/dgraph/dgraph {% for config in dgraph_service_config if config[1] is not none %}-{{ config[0] }} {{ config[1] }} {% endfor %}
+
+Restart=always
+RestartSec=20
+TimeoutSec=300
+User={{dgraph_owner}}
+Group={{dgraph_group}}
+StandardOutput=journal
+StandardError=journal
+WorkingDirectory={{dgraph_data_dir}}
+
+[Install]
+WantedBy=multi-user.target

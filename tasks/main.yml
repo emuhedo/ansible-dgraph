@@ -1,2 +1,31 @@
 ---
 # tasks file for ansible-dgraph
+- include_vars: 'dgraph.yml'
+
+- name: Create Dgraph group
+  group:
+    name: "{{ dgraph_group }}"
+    state: present
+
+- name: Create Dgraph user
+  user:
+    name: "{{ dgraph_owner }}"
+    group: "{{ dgraph_group }}"
+    createhome: no
+    shell: /sbin/nologin
+    state: present
+
+- name: "Creating mkdir {{ item }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ dgraph_owner }}"
+    group: "{{ dgraph_group }}"
+    mode: 0750
+  with_items:
+    - "{{ dgraph_install_dir }}"
+    - "{{ dgraph_data_dir }}"
+    - "{{ dgraph_install_dir }}/{{ dgraph_archive }}"
+
+- name: Install Draphg
+  include: install-dgraph.yml
