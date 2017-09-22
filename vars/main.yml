@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-dgraph
+dgraph_archive: "dgraph-{{ dgraph_platform_architecture }}-v{{ dgraph_version }}"
+dgraph_tarball_url: "https://github.com/dgraph-io/dgraph/releases/download/v{{ dgraph_version }}/{{ dgraph_archive }}.tar.gz"

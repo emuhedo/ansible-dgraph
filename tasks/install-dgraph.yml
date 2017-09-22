@@ -1,0 +1,16 @@
+- name: Download and extract Dgraph tarball
+  unarchive:
+    src: "{{ dgraph_tarball_url }}"
+    dest: "{{ dgraph_install_dir }}/{{ dgraph_archive }}"
+    owner: "{{ dgraph_owner }}"
+    group: "{{ dgraph_group }}"
+    copy: no
+    creates: "{{ dgraph_install_dir }}/{{ dgraph_archive }}/dgraph"
+
+- name: Install Dgraph systemd service
+  template:
+    src: dgraph.service.j2
+    dest: /etc/systemd/system/dgraph.service
+  notify:
+    - reload daemon
+    - restart dgraph
