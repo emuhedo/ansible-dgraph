@@ -1,5 +1,12 @@
 ---
 - hosts: localhost
   remote_user: root
-  roles:
-    - ansible-dgraph
+  tasks:
+    - name: Check if Dgraph service is enabled
+      command: systemctl is-enabled dgraph
+      register: command_result
+      failed_when: "'disabled' in command_result.stdout"
+
+    - shell: "systemctl status dgraph | grep -i running"
+      register: status
+      failed_when: status.rc != 0
